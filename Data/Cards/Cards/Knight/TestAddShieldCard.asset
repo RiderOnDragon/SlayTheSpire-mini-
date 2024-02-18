@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79979e3431983d2449da8c400efe50e5, type: 3}
+  m_Name: TestAddShieldCard
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 2067810711022871780, guid: 896c92875694e794b9b44e4c383d1701, type: 3}
+  _deckPanelCardPrefab: {fileID: 3456846743230433942, guid: 463cc6806ee44d745a8192173883b667, type: 3}
+  _abilities:
+  - _target: 2
+    _actions:
+    - _type: 2
+      _value: 7
+      _numberTriggering: 1
+  _manaCost: 1
+  _name: "\u0429\u0438\u0442"
+  _background: {fileID: 0}
+  _img: {fileID: 0}
+  _manaCostImg: {fileID: 1496935730, guid: 1cab83c0b7c78a74981af63bd8d5210b, type: 3}

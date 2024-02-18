@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: b7fb1169258f4fb4a8755e7579e64dd8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _teleportPrefab: {fileID: 7369732797282764922, guid: 7195fe0efcc5bdf4d85867b726f294ea, type: 3}
+  - _teleportContainer: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

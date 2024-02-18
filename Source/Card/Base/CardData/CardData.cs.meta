@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 174f42a8116299c49b833c1123bdbd41
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _prefab: {fileID: 2067810711022871780, guid: 896c92875694e794b9b44e4c383d1701, type: 3}
+  - _deckPanelCardPrefab: {fileID: 3456846743230433942, guid: 463cc6806ee44d745a8192173883b667, type: 3}
+  - _background: {instanceID: 0}
+  - _img: {instanceID: 0}
+  - _manaCostImg: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
