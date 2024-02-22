@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DealDamageAbility : CardAbility
+public class DealDamageAbility : Ability
 {
     public override Type AbilityType { get; } = Type.DEAL_DAMAGE;
+
     public override string Description
     {
         get
@@ -18,7 +19,7 @@ public class DealDamageAbility : CardAbility
         }
     }
     
-    public DealDamageAbility(int value, int numberTriggering) : base(value, numberTriggering)
+    public DealDamageAbility(Target target, int value, int numberTriggering) : base(target, value, numberTriggering)
     {
     }
 

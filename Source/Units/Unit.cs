@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(HpBar))]
+[RequireComponent(typeof(HpBar), typeof(UnitAnimation))]
 public abstract class Unit : MonoBehaviour
 {
     [SerializeField] private HpBar _hpBar;
     [SerializeField] private Collider2D _mainCollider;
 
+    protected UnitAnimation _animation;
+
     private int _currentHp;
     private int _shield;
-
-    protected abstract UnitAnimation Animation { get; }
 
     protected UnitData _data;
 
@@ -23,7 +23,7 @@ public abstract class Unit : MonoBehaviour
             if (value <= 0)
             {
                 _mainCollider.enabled = false;
-                Animation.Death();
+                _animation.Death();
             }
 
             if (value > _data.MaxHp)
@@ -47,8 +47,10 @@ public abstract class Unit : MonoBehaviour
 
     public void Init(UnitData data)
     {
+        _animation = GetComponent<UnitAnimation>();
+
         _data = data;
-        Animation.Init();
+        _animation.Init();
 
         ChildInit();
     }
@@ -75,7 +77,7 @@ public abstract class Unit : MonoBehaviour
             }
         }
 
-        Animation.TakeDamage();
+        _animation.TakeDamage();
         CurrentHp -= damage;
     }
 

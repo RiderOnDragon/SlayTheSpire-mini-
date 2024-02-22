@@ -14,12 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _prefab: {fileID: 2067810711022871780, guid: 896c92875694e794b9b44e4c383d1701, type: 3}
   _deckPanelCardPrefab: {fileID: 3456846743230433942, guid: 463cc6806ee44d745a8192173883b667, type: 3}
-  _abilities:
-  - _target: 2
-    _actions:
-    - _type: 2
-      _value: 7
-      _numberTriggering: 1
+  _cardAbilities:
+  - _target: 1
+    _type: 1
+    _value: 5
+    _numberTriggering: 1
   _manaCost: 1
   _name: "\u0429\u0438\u0442"
   _background: {fileID: 0}

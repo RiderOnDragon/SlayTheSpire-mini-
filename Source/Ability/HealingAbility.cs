@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealingAbility : CardAbility
+public class HealingAbility : Ability
 {
     public override Type AbilityType { get; } = Type.HEALING;
+
     public override string Description
     {
         get
@@ -18,7 +19,7 @@ public class HealingAbility : CardAbility
         }
     }
 
-    public HealingAbility(int value, int numberTriggering) : base(value, numberTriggering)
+    public HealingAbility(Target target, int value, int numberTriggering) : base(target, value, numberTriggering)
     {
     }
 

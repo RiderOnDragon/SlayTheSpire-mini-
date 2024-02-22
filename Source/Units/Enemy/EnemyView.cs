@@ -11,14 +11,14 @@ public class EnemyView : MonoBehaviour
     [SerializeField] private Sprite _attackSprite;
     [SerializeField] private Sprite _shieldSprite;
 
-    public void ChangeActionView(ActionPatterns.Type action, int value)
+    public void ChangeActionView(Ability.Type action, int value)
     {
         switch (action) 
         {
-            case ActionPatterns.Type.WEAK_ATTACK:
+            case Ability.Type.DEAL_DAMAGE:
                 _actionImage.sprite = _attackSprite;
                 break;
-            case ActionPatterns.Type.SHIELD:
+            case Ability.Type.ADD_SHIELD:
                 _actionImage.sprite = _shieldSprite;
                 break;
         }

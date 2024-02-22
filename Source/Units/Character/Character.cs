@@ -3,17 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterAnimation), typeof(CharacterView))]
+[RequireComponent(typeof(CharacterView))]
 public class Character : Unit
 {
-    [SerializeField] private CharacterAnimation _animation;
     [SerializeField] private CharacterView _view;
 
     private int _currentMana;
 
     public TempCharacterData Data { get => (TempCharacterData)_data; }
-
-    protected override UnitAnimation Animation { get => _animation; }
 
     public int CurrentMana 
     {
@@ -62,19 +59,23 @@ public class Character : Unit
     {
         RemoveMana(card.Data.ManaCost);
 
-        foreach (var target in card.Data.AbilitiesTargets)
+        foreach (var ability in card.Data.Abilities)
         {
-            foreach (var ability in target.Abilities)
+            switch (ability.AbilityType)
             {
-                switch (ability.AbilityType)
-                {
-                    case CardAbility.Type.DEAL_DAMAGE:
-                        _animation.Attack();
-                        break;
-                }
+                case Ability.Type.DEAL_DAMAGE:
+                    _animation.Attack();
+                    break;
+                case Ability.Type.ADD_SHIELD:
+                    Debug.LogError("NotImplementedException");
+                    break;
+                case Ability.Type.HEALING:
+                    Debug.LogError("NotImplementedException");
+                    break;
+                default:
+                    throw new System.Exception("The raw type of ability");
             }
         }
-        
     }
 
     private void RemoveMana(int count)

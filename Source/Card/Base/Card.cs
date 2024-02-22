@@ -32,7 +32,7 @@ public class Card : MonoBehaviour
             CardDestroyed?.Invoke(this);
     }
 
-    public void PlayCard(Collider2D[] targets)
+    public void PlayCard(Collider2D target)
     {
         if (Character.Singleton.CurrentMana < _data.ManaCost)
         {
@@ -42,42 +42,24 @@ public class Card : MonoBehaviour
 
         Unit targetUnit = null;
 
-        foreach (var target in targets)
+        if (target != null && target.TryGetComponent(out Unit unit) == true)
+            targetUnit = unit;
+
+        foreach (var ability in Data.Abilities)
         {
-            if (target.TryGetComponent(out Unit unit) == true)
+            if (ability.CheckTarget(ref targetUnit) == false)
             {
-                targetUnit = unit;
-                break;
+                FailedTryPlayCard?.Invoke();
+                return;
             }
         }
 
-        if (TryPlayCard(targetUnit) == false)
-        {
-            FailedTryPlayCard?.Invoke();
-            return;
-        }
-
-        UseAbility();
+        foreach (var ability in Data.Abilities)
+            ability.UseAbility(targetUnit);
 
         _isPlayed = true;
 
         Destroy(gameObject);
-    }
-
-    protected bool TryPlayCard(Unit target)
-    {
-        foreach (var abilityTarget in Data.AbilitiesTargets)
-        {
-            if (abilityTarget.PrepareAbility(target) == false)
-                return false;
-        }
-
-        return true;
-    }
-    protected void UseAbility()
-    {
-        foreach (var ability in Data.AbilitiesTargets)
-            ability.UseAbility();
     }
 
     public void UpgradeCard()

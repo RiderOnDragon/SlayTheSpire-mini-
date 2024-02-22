@@ -11,7 +11,7 @@ public class EnemyWave : ISerializationCallbackReceiver
 
     public void OnBeforeSerialize()
     {
-        OnValidate();
+        Validate();
     }
 
     public void OnAfterDeserialize()
@@ -19,7 +19,7 @@ public class EnemyWave : ISerializationCallbackReceiver
     }
 
 
-    private void OnValidate()
+    private void Validate()
     {
         int maxCount = GameConfig.MAX_ENEMY_IN_SQUAD;
 

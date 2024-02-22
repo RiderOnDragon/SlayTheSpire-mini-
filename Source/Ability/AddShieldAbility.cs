@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AddShieldAbility : CardAbility
+public class AddShieldAbility : Ability
 {
     public override Type AbilityType { get; } = Type.ADD_SHIELD;
+
     public override string Description
     {
         get
@@ -18,9 +19,10 @@ public class AddShieldAbility : CardAbility
         }
     }
 
+
     private Character _character;
 
-    public AddShieldAbility(int value, int numberTriggering) : base(value, numberTriggering)
+    public AddShieldAbility(Target target, int value, int numberTriggering) : base(target, value, numberTriggering)
     {
     }
 

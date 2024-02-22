@@ -14,10 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHp: 5
   _actionPatterns:
-  - _type: 0
+  - _target: 1
+    _type: 0
     _value: 15
-  - _type: 0
+    _numberTriggering: 1
+  - _target: 1
+    _type: 0
     _value: 10
-  - _type: 0
+    _numberTriggering: 1
+  - _target: 1
+    _type: 0
     _value: 20
+    _numberTriggering: 1
   _prefab: {fileID: 9178287760420580156, guid: 997ec70feca22b2408c8623a7405ca41, type: 3}

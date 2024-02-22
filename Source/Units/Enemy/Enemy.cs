@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[RequireComponent(typeof(EnemyView), typeof(EnemyAnimation))]
+[RequireComponent(typeof(EnemyView))]
 public class Enemy : Unit
 {
-    [SerializeField] private EnemyAnimation _animation;
     [SerializeField] private EnemyView _view;
     private EnemyData Data { get => (EnemyData)_data; }
 
-    private ActionPatterns _nextAction = null;
+    private Ability _nextAction = null;
     private int _turn = 0;
-
-    protected override UnitAnimation Animation { get => _animation; }
 
     protected override void ChildInit()
     {
@@ -33,14 +30,22 @@ public class Enemy : Unit
 
     public IEnumerator UsePattern()
     {
-        switch (_nextAction.ActionType) 
+        foreach (var ability in Data.ActionPatterns)
         {
-            case ActionPatterns.Type.WEAK_ATTACK:
-                _animation.WeakAttack();
-                break;
-            case ActionPatterns.Type.SHIELD:
-                _animation.AddShield();
-                break;
+            switch (ability.AbilityType)
+            {
+                case Ability.Type.DEAL_DAMAGE:
+                    _animation.Attack();
+                    break;
+                case Ability.Type.ADD_SHIELD:
+                    Debug.LogError("NotImplementedException");
+                    break;
+                case Ability.Type.HEALING:
+                    Debug.LogError("NotImplementedException");
+                    break;
+                default:
+                    throw new System.Exception("The raw type of ability");
+            }
         }
 
         _view.DisableActionView();
@@ -55,7 +60,7 @@ public class Enemy : Unit
 
         _nextAction = Data.ActionPatterns[_turn];
 
-        var actionType = _nextAction.ActionType;
+        var actionType = _nextAction.AbilityType;
         int value = _nextAction.Value; //ѕозже будет мен€тьс€ в зависимости от наложенных ослаблений/усилений
 
         _view.ChangeActionView(actionType, value);
