@@ -90,7 +90,7 @@ public class EnemySquad : MonoBehaviour
         yield return new WaitForSeconds(TURN_DELAY);
 
         for (int i = _currentEnemies.Count - 1; i >= 0; i--)
-            yield return _currentEnemies[i].UsePattern();
+            yield return _currentEnemies[i].NextTurn();
 
         EnemyTurnFinished?.Invoke();
     }

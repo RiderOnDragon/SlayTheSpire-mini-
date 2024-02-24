@@ -10,10 +10,10 @@ public class DealDamageAbility : Ability
     {
         get
         {
-            string description = $"Наносит {_value} урона";
+            string description = $"Наносит {Value} урона";
 
-            if (_numberTriggering > 1)
-                description = description.Replace(" урона", $"x{_numberTriggering} урона");
+            if (NumberTriggering > 1)
+                description = description.Replace(" урона", $"x{NumberTriggering} урона");
 
             return description;
         }
@@ -25,6 +25,6 @@ public class DealDamageAbility : Ability
 
     protected override void UseChieldAbility(Unit target)
     {
-        target.TakeDamage(_value);
+        target.TakeDamage(Value);
     }
 }

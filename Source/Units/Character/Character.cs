@@ -72,6 +72,9 @@ public class Character : Unit
                 case Ability.Type.HEALING:
                     Debug.LogError("NotImplementedException");
                     break;
+                case Ability.Type.ADD_POISON_STATUS:
+                    Debug.LogError("NotImplementedException");
+                    break;
                 default:
                     throw new System.Exception("The raw type of ability");
             }
@@ -86,10 +89,8 @@ public class Character : Unit
         CurrentMana -= count;
     }
 
-    private void OnNextTurn()
+    protected override void ChildOnNextTurn()
     {
-        RemoveShield();
-
         CurrentMana = Data.MaxMana;
     }
 

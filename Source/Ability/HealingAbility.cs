@@ -10,10 +10,10 @@ public class HealingAbility : Ability
     {
         get
         {
-            string description = $"Лечит {_value} здоровья";
+            string description = $"Лечит {Value} здоровья";
 
-            if (_numberTriggering > 1)
-                description = description.Replace(" здоровья", $"x{_numberTriggering} здоровья");
+            if (NumberTriggering > 1)
+                description = description.Replace(" здоровья", $"x{NumberTriggering} здоровья");
 
             return description;
         }
@@ -25,6 +25,6 @@ public class HealingAbility : Ability
 
     protected override void UseChieldAbility(Unit target)
     {
-        target.Healing(_value);
+        target.Healing(Value);
     }
 }

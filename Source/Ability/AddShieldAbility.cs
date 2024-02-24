@@ -10,10 +10,10 @@ public class AddShieldAbility : Ability
     {
         get
         {
-            string description = $"Даёт {_value} брони";
+            string description = $"Даёт {Value} брони";
 
-            if (_numberTriggering > 1)
-                description = description.Replace(" брони", $"x{_numberTriggering} брони");
+            if (NumberTriggering > 1)
+                description = description.Replace(" брони", $"x{NumberTriggering} брони");
 
             return description;
         }
@@ -28,6 +28,6 @@ public class AddShieldAbility : Ability
 
     protected override void UseChieldAbility(Unit target)
     {
-        target.AddShield(_value);
+        target.AddShield(Value);
     }
 }

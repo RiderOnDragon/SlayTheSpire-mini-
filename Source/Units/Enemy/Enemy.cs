@@ -18,37 +18,40 @@ public class Enemy : Unit
 
         PrepareNextAction();
 
-        TurnSystem.PlayerTurnFinished += RemoveShield;
         EnemySquad.EnemyTurnFinished += PrepareNextAction;
     }
 
     private void OnDestroy()
     {
-        TurnSystem.PlayerTurnFinished -= RemoveShield;
         EnemySquad.EnemyTurnFinished -= PrepareNextAction;
+    }
+
+    public IEnumerator NextTurn()
+    {
+        OnNextTurn();
+
+        yield return UsePattern();
     }
 
     public IEnumerator UsePattern()
     {
-        foreach (var ability in Data.ActionPatterns)
+        switch (_nextAction.AbilityType)
         {
-            switch (ability.AbilityType)
-            {
-                case Ability.Type.DEAL_DAMAGE:
-                    _animation.Attack();
-                    break;
-                case Ability.Type.ADD_SHIELD:
-                    Debug.LogError("NotImplementedException");
-                    break;
-                case Ability.Type.HEALING:
-                    Debug.LogError("NotImplementedException");
-                    break;
-                default:
-                    throw new System.Exception("The raw type of ability");
-            }
+            case Ability.Type.DEAL_DAMAGE:
+                _animation.Attack();
+                break;
+            case Ability.Type.ADD_SHIELD:
+                _animation.AddShield();
+                break;
+            case Ability.Type.HEALING:
+                Debug.LogError("NotImplementedException");
+                break;
+            case Ability.Type.ADD_POISON_STATUS:
+                Debug.LogError("NotImplementedException");
+                break;
+            default:
+                throw new System.Exception("The raw type of ability");
         }
-
-        _view.DisableActionView();
 
         yield return new WaitForSeconds(_animation.AnimationTime);
     }
@@ -66,5 +69,25 @@ public class Enemy : Unit
         _view.ChangeActionView(actionType, value);
 
         _turn++;
+    }
+    private void RemoveAction()
+    {
+        _nextAction = null;
+        _view.DisableActionView();
+    }
+
+    //Used in Animator
+    public void DealDamage()
+    {
+        Character.Singleton.TakeDamage(_nextAction.Value);
+
+        RemoveAction();
+    }
+    //Used in Animator
+    public void ProtectYourself()
+    {
+        AddShield(_nextAction.Value);
+
+        RemoveAction();
     }
 }

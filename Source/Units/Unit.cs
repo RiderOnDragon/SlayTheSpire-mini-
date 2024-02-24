@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(HpBar), typeof(UnitAnimation))]
@@ -10,11 +11,12 @@ public abstract class Unit : MonoBehaviour
     [SerializeField] private Collider2D _mainCollider;
 
     protected UnitAnimation _animation;
+    protected UnitData _data;
+
+    private List<Status> _statuses = new List<Status>();
 
     private int _currentHp;
     private int _shield;
-
-    protected UnitData _data;
 
     protected int CurrentHp 
     {
@@ -56,13 +58,22 @@ public abstract class Unit : MonoBehaviour
     }
 
     protected abstract void ChildInit();
+    protected virtual void ChildOnNextTurn() { }
 
-    public void TakeDamage(int damage)
+    protected void OnNextTurn()
+    {
+        TickTempStatuses();
+        RemoveShield();
+
+        ChildOnNextTurn();
+    }
+
+    public void TakeDamage(int damage, bool ignoreShield = false)
     {
         if (damage < 0)
             throw new ArgumentException();
 
-        if (Shield > 0)
+        if (ignoreShield == false && Shield > 0)
         {
             if (damage > Shield)
             {
@@ -80,7 +91,6 @@ public abstract class Unit : MonoBehaviour
         _animation.TakeDamage();
         CurrentHp -= damage;
     }
-
     public void Healing(int health)
     {
         if (health < 0)
@@ -96,12 +106,32 @@ public abstract class Unit : MonoBehaviour
 
         Shield += count;
     }
-
-    protected void RemoveShield()
+    private void RemoveShield()
     {
         Shield = 0;
     }
 
+    public void AddStatus(Status status)
+    {
+        _statuses.Add(status);
+        Debug.Log(_statuses.Count);
+
+        status.StatusFinished += RemoveStatus;
+    }
+    private void TickTempStatuses()
+    {
+        var tempStatuses = _statuses.OfType<TempStatus>().ToList();
+
+        foreach (var status in tempStatuses)
+            status.Tick();
+    }
+    private void RemoveStatus(Status status)
+    {
+        _statuses.Remove(status);
+        status.StatusFinished -= RemoveStatus;
+    }
+
+    //Used in Animator
     public void DestroyUnit()
     {
         Death?.Invoke(this);

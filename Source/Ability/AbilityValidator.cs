@@ -30,6 +30,9 @@ public class AbilityValidator
                 case Ability.Type.HEALING:
                     abilities.Add(new HealingAbility(target, value, numberTriggering));
                     break;
+                case Ability.Type.ADD_POISON_STATUS:
+                    abilities.Add(new AddPoisonAbility(target, value, numberTriggering));
+                    break;
                 default:
                     throw new System.Exception("The raw type of ability");
             }

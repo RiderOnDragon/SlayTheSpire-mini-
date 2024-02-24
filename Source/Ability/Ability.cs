@@ -19,11 +19,12 @@ public abstract class Ability
     {
         DEAL_DAMAGE,
         ADD_SHIELD,
-        HEALING
+        HEALING,
+        ADD_POISON_STATUS
     }
 
     private Target _target;
-    protected int _value;
+    private int _value;
     protected int _numberTriggering;
 
     protected Ability(Target target, int value, int numberTriggering)
@@ -36,7 +37,7 @@ public abstract class Ability
     public Target AbilityTarget { get => _target; }
     public abstract Type AbilityType { get; }
     public int Value { get => _value; }
-    public int NumberTriggering { get => _numberTriggering; }
+    public int NumberTriggering { get => NumberTriggering; }
 
     public abstract string Description { get; }
 
