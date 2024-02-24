@@ -21,7 +21,7 @@ public class EnemyWave : ISerializationCallbackReceiver
 
     private void Validate()
     {
-        int maxCount = GameConfig.MAX_ENEMY_IN_SQUAD;
+        int maxCount = GameConst.MAX_ENEMY_IN_SQUAD;
 
         if (_enemys.Count > maxCount)
         {

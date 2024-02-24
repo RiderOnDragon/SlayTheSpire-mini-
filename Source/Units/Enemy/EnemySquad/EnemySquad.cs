@@ -8,7 +8,7 @@ public class EnemySquad : MonoBehaviour
 {
     [SerializeField] private EnemySquadView _view;
 
-    [SerializeField] private Transform[] _unitPosition = new Transform[GameConfig.MAX_ENEMY_IN_SQUAD];
+    [SerializeField] private Transform[] _unitPosition = new Transform[GameConst.MAX_ENEMY_IN_SQUAD];
 
     private List<EnemyWave> _wavesData = new List<EnemyWave>();
 

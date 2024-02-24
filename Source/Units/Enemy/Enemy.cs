@@ -67,24 +67,4 @@ public class Enemy : Unit
 
         _turn++;
     }
-
-    private void RemoveAction()
-    {
-        _nextAction = null;
-        _view.DisableActionView();
-    }
-
-    public void DealDamage()
-    {
-        Character.Singleton.TakeDamage(_nextAction.Value);
-
-        RemoveAction();
-    }
-
-    public void ProtectYourself()
-    {
-        AddShield(_nextAction.Value);
-
-        RemoveAction();
-    }
 }
