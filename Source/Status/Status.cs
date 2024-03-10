@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class Status
 {
     private int _value;
+    protected Unit _target;
 
     protected int Value
     {
@@ -22,14 +23,33 @@ public abstract class Status
         }
     }
 
+    public int StatusValue { get => _value; }
+
+
     public event Action<Status> StatusFinished;
 
-    public Status(Unit target, int value)
+    public Status(int value)
     {
         _value = value;
-
-        ApplyEffect(target);
     }
 
-    protected abstract void ApplyEffect(Unit taget);
+    public void ApplyEffect(Unit target)
+    {
+        _target = target;
+        UseInitialEffect();
+    }
+
+    protected virtual void UseInitialEffect() { }
+    protected virtual void RemoveStatus() { }
+
+    public void AddValue(int value)
+    {
+        if (_target == null)
+            throw new System.ArgumentNullException();
+        if (value < 0)
+            throw new System.ArgumentException();
+
+        _value += value;
+        ApplyEffect(_target);
+    }
 }

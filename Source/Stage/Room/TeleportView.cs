@@ -22,6 +22,8 @@ public class TeleportView : MonoBehaviour
             case RoomData.Type.CAMP:
                 _animator.runtimeAnimatorController = _campRoomTeleport;
                 break;
+            default:
+                throw new System.Exception("Raw Room type");
         }
     }
 }

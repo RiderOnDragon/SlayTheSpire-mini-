@@ -21,15 +21,15 @@ MonoBehaviour:
   _countReceivedCards: 5
   _rewardCardsCount: 3
   _startDeck:
-  - {fileID: 11400000, guid: dc760f9ef4f0b6541b213aedc5055c48, type: 2}
-  - {fileID: 11400000, guid: dc760f9ef4f0b6541b213aedc5055c48, type: 2}
-  - {fileID: 11400000, guid: dc760f9ef4f0b6541b213aedc5055c48, type: 2}
-  - {fileID: 11400000, guid: 0dee3d8dd37099e449321d8618f44925, type: 2}
+  - {fileID: 11400000, guid: 27c2ad00db883ed409e70bf0a436f2ff, type: 2}
+  - {fileID: 11400000, guid: 27c2ad00db883ed409e70bf0a436f2ff, type: 2}
+  - {fileID: 11400000, guid: c4dc07d37be334944b5639f8dee8ccd0, type: 2}
+  - {fileID: 11400000, guid: c4dc07d37be334944b5639f8dee8ccd0, type: 2}
   - {fileID: 11400000, guid: 0dee3d8dd37099e449321d8618f44925, type: 2}
   - {fileID: 11400000, guid: 0dee3d8dd37099e449321d8618f44925, type: 2}
   - {fileID: 11400000, guid: c9bb1e605fbea024e8bf3aa7dbf168de, type: 2}
-  - {fileID: 11400000, guid: c4dc07d37be334944b5639f8dee8ccd0, type: 2}
-  - {fileID: 11400000, guid: c4dc07d37be334944b5639f8dee8ccd0, type: 2}
-  - {fileID: 11400000, guid: 27c2ad00db883ed409e70bf0a436f2ff, type: 2}
-  - {fileID: 11400000, guid: 27c2ad00db883ed409e70bf0a436f2ff, type: 2}
-  - {fileID: 11400000, guid: 27c2ad00db883ed409e70bf0a436f2ff, type: 2}
+  - {fileID: 11400000, guid: c9bb1e605fbea024e8bf3aa7dbf168de, type: 2}
+  - {fileID: 11400000, guid: 2502806aa813629428b08f51da65c986, type: 2}
+  - {fileID: 11400000, guid: 2502806aa813629428b08f51da65c986, type: 2}
+  - {fileID: 11400000, guid: dc760f9ef4f0b6541b213aedc5055c48, type: 2}
+  - {fileID: 11400000, guid: dc760f9ef4f0b6541b213aedc5055c48, type: 2}

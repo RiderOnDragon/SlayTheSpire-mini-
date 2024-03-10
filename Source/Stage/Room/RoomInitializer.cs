@@ -17,7 +17,8 @@ public abstract class RoomInitializer : MonoBehaviour
     private void Init()
     {
         var characterData = BasicRoomLoadingOptions.CharacterData;
-        var character = Instantiate(characterData.Prefab, _characterPosition);
+        var character = Character.Singleton;
         character.Init(characterData);
+        character.transform.position = _characterPosition.position;
     }
 }

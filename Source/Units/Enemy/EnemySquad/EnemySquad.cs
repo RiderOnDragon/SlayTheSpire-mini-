@@ -8,7 +8,7 @@ public class EnemySquad : MonoBehaviour
 {
     [SerializeField] private EnemySquadView _view;
 
-    [SerializeField] private Transform[] _unitPosition = new Transform[GameConst.MAX_ENEMY_IN_SQUAD];
+    [SerializeField] private Transform[] _unitPosition;
 
     private List<EnemyWave> _wavesData = new List<EnemyWave>();
 
@@ -21,7 +21,8 @@ public class EnemySquad : MonoBehaviour
     public static event Action EnemyTurnFinished;
     public static event Action AllWavesDefeated;
 
-    private const float TURN_DELAY = 0.2f;
+    private const float START_TURN_DELAY = 0.2f;
+    private const float ENEMY_TURN_DELAY = 0.5f;
 
     public void Init(List<EnemyWave> wavesData)
     {
@@ -37,11 +38,13 @@ public class EnemySquad : MonoBehaviour
         InitNewWave();
 
         TurnSystem.PlayerTurnFinished += StartEnemyTurn;
+        Character.Singleton.Death += StopTurn;
     }
 
     private void OnDestroy()
     {
         TurnSystem.PlayerTurnFinished -= StartEnemyTurn;
+        Character.Singleton.Death -= StopTurn;
     }
 
     public void InitNewWave()
@@ -87,11 +90,19 @@ public class EnemySquad : MonoBehaviour
 
     private IEnumerator EnemyTurn()
     {
-        yield return new WaitForSeconds(TURN_DELAY);
+        yield return new WaitForSeconds(START_TURN_DELAY);
 
         for (int i = _currentEnemies.Count - 1; i >= 0; i--)
-            yield return _currentEnemies[i].NextTurn();
+        {
+            yield return _currentEnemies[i].NextEnemyTurn();
+            yield return new WaitForSeconds(ENEMY_TURN_DELAY);
+        }
 
         EnemyTurnFinished?.Invoke();
+    }
+
+    private void StopTurn(Unit unit)
+    {
+        StopCoroutine(EnemyTurn());
     }
 }

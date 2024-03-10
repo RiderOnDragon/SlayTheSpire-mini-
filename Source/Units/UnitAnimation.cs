@@ -7,9 +7,9 @@ public class UnitAnimation : MonoBehaviour
 {
     protected Animator _animator;
 
-    public float AnimationTime { get; private set; }
+    private float _animationTime;
 
-    private const float DELAY_AFTER_ANIMATION = 0.5f;
+    private const float DELAY_AFTER_ANIMATION = 0.0f;
 
     private const string ATTACK = "Attack";
     private const string ADD_SHIELD = "AddShield";
@@ -23,29 +23,31 @@ public class UnitAnimation : MonoBehaviour
         _animator.SetFloat(START_OFFSET, Random.Range(0, 1f));
     }
 
-    public void Attack()
+    public Coroutine Attack()
     {
-        PlayAnimation(ATTACK);
+        return StartCoroutine(PlayAnimation(ATTACK));
     }
 
-    public void AddShield()
+    public Coroutine AddShield()
     {
-        PlayAnimation(ADD_SHIELD);
+        return StartCoroutine(PlayAnimation(ADD_SHIELD));
     }
 
-    public void TakeDamage()
+    public Coroutine TakeDamage()
     {
-        PlayAnimation(TAKE_DAMAGE);
+        return StartCoroutine(PlayAnimation(TAKE_DAMAGE));
     }
 
-    public void Death()
+    public Coroutine Death()
     {
-        PlayAnimation(DEATH);
+        return StartCoroutine(PlayAnimation(DEATH));
     }
 
-    protected void PlayAnimation(string trigger)
+    protected IEnumerator PlayAnimation(string trigger)
     {
         _animator.SetTrigger(trigger);
-        AnimationTime = _animator.GetCurrentAnimatorStateInfo(0).length + DELAY_AFTER_ANIMATION;
+        _animationTime = _animator.GetCurrentAnimatorStateInfo(0).length + DELAY_AFTER_ANIMATION;
+
+        yield return new WaitForSeconds(_animationTime);
     }
 }

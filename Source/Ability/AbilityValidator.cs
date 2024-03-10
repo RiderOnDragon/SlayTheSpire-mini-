@@ -21,17 +21,17 @@ public class AbilityValidator
 
             switch (ability.AbilityType)
             {
-                case Ability.Type.DEAL_DAMAGE:
+                case AbilityType.DEAL_DAMAGE:
                     abilities.Add(new DealDamageAbility(target, value, numberTriggering));
                     break;
-                case Ability.Type.ADD_SHIELD:
+                case AbilityType.ADD_SHIELD:
                     abilities.Add(new AddShieldAbility(target, value, numberTriggering));
                     break;
-                case Ability.Type.HEALING:
+                case AbilityType.HEALING:
                     abilities.Add(new HealingAbility(target, value, numberTriggering));
                     break;
-                case Ability.Type.ADD_POISON_STATUS:
-                    abilities.Add(new AddPoisonAbility(target, value, numberTriggering));
+                case AbilityType.ADD_POISON_STATUS:
+                    abilities.Add(new AddStatusAbility(new PoisonStatus(value), target, value, numberTriggering));
                     break;
                 default:
                     throw new System.Exception("The raw type of ability");
@@ -45,13 +45,13 @@ public class AbilityValidator
     public struct AbilityStruct
     {
         [SerializeField] private Ability.Target _target;
-        [SerializeField] private Ability.Type _type;
+        [SerializeField] private AbilityType _type;
         [SerializeField] private int _value;
         [Tooltip("The array is needed in the case of a multi-action")]
         [SerializeField] private int _numberTriggering;
 
         public Ability.Target Target { get => _target; }
-        public Ability.Type AbilityType { get => _type; }
+        public AbilityType AbilityType { get => _type; }
         public int Value { get => _value; }
         public int NumberTriggering { get => _numberTriggering; }
     }

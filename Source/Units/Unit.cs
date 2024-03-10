@@ -4,19 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(HpBar), typeof(UnitAnimation))]
+[RequireComponent(typeof(UnitAnimation))]
 public abstract class Unit : MonoBehaviour
 {
     [SerializeField] private HpBar _hpBar;
     [SerializeField] private Collider2D _mainCollider;
 
-    protected UnitAnimation _animation;
-    protected UnitData _data;
+    private UnitAnimation _animation;
+    private UnitData _data;
+    private UnitStatus _currentStatus;
 
     private List<Status> _statuses = new List<Status>();
 
     private int _currentHp;
     private int _shield;
+
+    protected UnitAnimation Animation { get => _animation; }
+    protected UnitData Data { get => _data; }
 
     protected int CurrentHp 
     {
@@ -25,7 +29,7 @@ public abstract class Unit : MonoBehaviour
             if (value <= 0)
             {
                 _mainCollider.enabled = false;
-                _animation.Death();
+                Animation.Death();
             }
 
             if (value > _data.MaxHp)
@@ -45,6 +49,8 @@ public abstract class Unit : MonoBehaviour
         }
     }
 
+    public UnitStatus CurrentStatus { get => _currentStatus; }
+
     public event Action<Unit> Death;
 
     public void Init(UnitData data)
@@ -52,23 +58,32 @@ public abstract class Unit : MonoBehaviour
         _animation = GetComponent<UnitAnimation>();
 
         _data = data;
-        _animation.Init();
+        _currentStatus = new UnitStatus();
+        CurrentHp = _data.MaxHp;
+        Animation.Init();
 
         ChildInit();
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var status in _statuses)
+            status.StatusFinished -= RemoveStatus;
     }
 
     protected abstract void ChildInit();
     protected virtual void ChildOnNextTurn() { }
 
-    protected void OnNextTurn()
+    protected IEnumerator NextTurn()
     {
-        TickTempStatuses();
+        yield return TickTempStatuses();
+        
         RemoveShield();
 
         ChildOnNextTurn();
     }
 
-    public void TakeDamage(int damage, bool ignoreShield = false)
+    public Coroutine TakeDamage(int damage, bool ignoreShield = false)
     {
         if (damage < 0)
             throw new ArgumentException();
@@ -84,12 +99,12 @@ public abstract class Unit : MonoBehaviour
             {
                 Shield -= damage;
 
-                return;
+                return null;
             }
         }
 
-        _animation.TakeDamage();
         CurrentHp -= damage;
+        return Animation.TakeDamage();
     }
     public void Healing(int health)
     {
@@ -113,17 +128,27 @@ public abstract class Unit : MonoBehaviour
 
     public void AddStatus(Status status)
     {
+        var findedStatus = _statuses.Find(x => x.GetType() == status.GetType());
+
+        if (findedStatus != null)
+        {
+            findedStatus.AddValue(status.StatusValue);
+            return;
+        }
+
+        status.ApplyEffect(this);
         _statuses.Add(status);
-        Debug.Log(_statuses.Count);
 
         status.StatusFinished += RemoveStatus;
     }
-    private void TickTempStatuses()
+    private IEnumerator TickTempStatuses()
     {
         var tempStatuses = _statuses.OfType<TempStatus>().ToList();
 
         foreach (var status in tempStatuses)
-            status.Tick();
+            yield return status.Tick();
+
+        yield return null;
     }
     private void RemoveStatus(Status status)
     {
@@ -131,10 +156,42 @@ public abstract class Unit : MonoBehaviour
         status.StatusFinished -= RemoveStatus;
     }
 
-    //Used in Animator
+    #region CALC VALUE
+    public int CalcDamage(Unit target, int damage)
+    {
+        damage += CurrentStatus.DamageBonus;
+
+        if (CurrentStatus.IsWeak == true)
+            damage = Mathf.RoundToInt(damage * 0.75f);
+
+        if (target.CurrentStatus.IsVulnerable == true)
+            damage = Mathf.RoundToInt(damage * 1.5f);
+
+        if (damage < 0)
+            damage = 0;
+
+        return damage;
+    }
+
+    public int CalcShield(int shield)
+    {
+        shield += CurrentStatus.ShieldBonus;
+
+        if (CurrentStatus.IsFragile == true)
+            shield = Mathf.RoundToInt(shield * 0.75f);
+
+        if (shield < 0)
+            shield = 0;
+
+        return shield;
+    }
+    #endregion
+
+    #region USED IN ANIMATOR
     public void DestroyUnit()
     {
         Death?.Invoke(this);
         Destroy(gameObject);
     }
+    #endregion
 }

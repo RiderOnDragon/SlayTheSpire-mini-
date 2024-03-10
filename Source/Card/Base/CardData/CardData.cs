@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 
@@ -19,6 +18,7 @@ public abstract class CardData : ScriptableObject
     [Space(20)]
 
     [SerializeField] private string _name;
+    [SerializeField, TextArea] private string _description;
 
     [Space(20)]
 
@@ -35,15 +35,7 @@ public abstract class CardData : ScriptableObject
     public IList<Ability> Abilities { get => _abilities.AsReadOnly(); }
     public int ManaCost { get => _manaCost; }
     public string Name { get => _name; }
-    public string Description 
-    {
-        get
-        {
-            string description = string.Empty;
-
-            return description;
-        }
-    }
+    public string Description { get => _description; }
     public Sprite Background { get => _background; }
     public Sprite Img { get => _img; }
     public Sprite ManaCostImg { get => _manaCostImg; }

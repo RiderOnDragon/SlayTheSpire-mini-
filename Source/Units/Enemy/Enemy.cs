@@ -7,15 +7,14 @@ using UnityEngine;
 public class Enemy : Unit
 {
     [SerializeField] private EnemyView _view;
-    private EnemyData Data { get => (EnemyData)_data; }
+    private new EnemyData Data { get => (EnemyData)base.Data; }
 
     private Ability _nextAction = null;
+    private int _nextActionValue;
     private int _turn = 0;
 
     protected override void ChildInit()
     {
-        CurrentHp = _data.MaxHp;
-
         PrepareNextAction();
 
         EnemySquad.EnemyTurnFinished += PrepareNextAction;
@@ -26,34 +25,26 @@ public class Enemy : Unit
         EnemySquad.EnemyTurnFinished -= PrepareNextAction;
     }
 
-    public IEnumerator NextTurn()
+    public IEnumerator NextEnemyTurn()
     {
-        OnNextTurn();
+        yield return NextTurn();
 
         yield return UsePattern();
     }
 
     public IEnumerator UsePattern()
     {
-        switch (_nextAction.AbilityType)
+        switch (_nextAction)
         {
-            case Ability.Type.DEAL_DAMAGE:
-                _animation.Attack();
+            case DealDamageAbility:
+                yield return Animation.Attack();
                 break;
-            case Ability.Type.ADD_SHIELD:
-                _animation.AddShield();
-                break;
-            case Ability.Type.HEALING:
-                Debug.LogError("NotImplementedException");
-                break;
-            case Ability.Type.ADD_POISON_STATUS:
-                Debug.LogError("NotImplementedException");
+            case AddShieldAbility:
+                yield return Animation.AddShield();
                 break;
             default:
                 throw new System.Exception("The raw type of ability");
         }
-
-        yield return new WaitForSeconds(_animation.AnimationTime);
     }
 
     private void PrepareNextAction()
@@ -63,10 +54,21 @@ public class Enemy : Unit
 
         _nextAction = Data.ActionPatterns[_turn];
 
-        var actionType = _nextAction.AbilityType;
-        int value = _nextAction.Value; //ѕозже будет мен€тьс€ в зависимости от наложенных ослаблений/усилений
+        _nextActionValue = _nextAction.Value;
 
-        _view.ChangeActionView(actionType, value);
+        switch (_nextAction)
+        {
+            case DealDamageAbility:
+                _nextActionValue = CalcDamage(Character.Singleton, _nextActionValue);
+                break;
+            case AddShieldAbility:
+                _nextActionValue = CalcShield(_nextActionValue);
+                break;
+            default:
+                throw new System.Exception("The raw type of ability");
+        }
+
+        _view.ChangeActionView(_nextAction, _nextActionValue);
 
         _turn++;
     }
@@ -76,18 +78,19 @@ public class Enemy : Unit
         _view.DisableActionView();
     }
 
-    //Used in Animator
+    #region USED IN ANIMATOR
     public void DealDamage()
     {
-        Character.Singleton.TakeDamage(_nextAction.Value);
+        Character.Singleton.TakeDamage(_nextActionValue);
 
         RemoveAction();
     }
-    //Used in Animator
+
     public void ProtectYourself()
     {
-        AddShield(_nextAction.Value);
+        AddShield(_nextActionValue);
 
         RemoveAction();
     }
+    #endregion
 }

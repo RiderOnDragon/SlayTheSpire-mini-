@@ -15,17 +15,9 @@ public abstract class Ability
         ALL_UNIT
     }
 
-    public enum Type
-    {
-        DEAL_DAMAGE,
-        ADD_SHIELD,
-        HEALING,
-        ADD_POISON_STATUS
-    }
-
     private Target _target;
     private int _value;
-    protected int _numberTriggering;
+    private int _numberTriggering;
 
     protected Ability(Target target, int value, int numberTriggering)
     {
@@ -35,11 +27,8 @@ public abstract class Ability
     }
 
     public Target AbilityTarget { get => _target; }
-    public abstract Type AbilityType { get; }
     public int Value { get => _value; }
-    public int NumberTriggering { get => NumberTriggering; }
-
-    public abstract string Description { get; }
+    public int NumberTriggering { get => _numberTriggering; }
 
     public bool CheckTarget(ref Unit targetUnit)
     {
@@ -69,28 +58,34 @@ public abstract class Ability
 
     public void UseAbility(Unit targetUnit)
     {
-        switch (_target)
+        int cycle = 0;
+        while (cycle < _numberTriggering)
         {
-            case Target.SINGLE_ENEMY:
-                UseChieldAbility(targetUnit);
-                break;
+            switch (_target)
+            {
+                case Target.SINGLE_ENEMY:
+                    UseChieldAbility(targetUnit);
+                    break;
 
-            case Target.CHARACTER:
-                UseChieldAbility(targetUnit);
-                break;
+                case Target.CHARACTER:
+                    UseChieldAbility(targetUnit);
+                    break;
 
-            case Target.ALL_ENEMY:
-                foreach (var enemy in EnemySquad.Singleton.CurrentEnemies)
-                    UseChieldAbility(enemy);
-                break;
+                case Target.ALL_ENEMY:
+                    foreach (var enemy in EnemySquad.Singleton.CurrentEnemies)
+                        UseChieldAbility(enemy);
+                    break;
 
-            case Target.ALL_UNIT:
-                List<Unit> targets = new List<Unit>();
-                targets.AddRange(EnemySquad.Singleton.CurrentEnemies);
-                targets.Add(Character.Singleton);
-                foreach (var target in targets)
-                    UseChieldAbility(target);
-                break;
+                case Target.ALL_UNIT:
+                    List<Unit> targets = new List<Unit>();
+                    targets.AddRange(EnemySquad.Singleton.CurrentEnemies);
+                    targets.Add(Character.Singleton);
+                    foreach (var target in targets)
+                        UseChieldAbility(target);
+                    break;
+            }
+
+            cycle++;
         }
     }
 

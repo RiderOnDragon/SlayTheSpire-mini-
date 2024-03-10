@@ -10,7 +10,7 @@ public class Character : Unit
 
     private int _currentMana;
 
-    public TempCharacterData Data { get => (TempCharacterData)_data; }
+    public new TempCharacterData Data { get => (TempCharacterData)base.Data; }
 
     public int CurrentMana 
     {
@@ -29,30 +29,40 @@ public class Character : Unit
 
     public static Character Singleton;
 
-    public new static event Action Death;
-
     protected override void ChildInit()
     {
         if (Singleton == null)
+        {
             Singleton = this;
-        else
+
+            Card.CardPlayed += OnCardPlayed;
+            TurnSystem.NextTurn += OnNextTurn;
+            RoomCompletor.CompletedRoom += SaveData;
+
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (Singleton != this)
+        {
             Destroy(this);
+        }
 
         _view.Init();
 
         CurrentHp = Data.CurrentHp;
         CurrentMana = Data.MaxMana;
 
-        Card.CardPlayed += OnCardPlayed;
-        TurnSystem.NextTurn += OnNextTurn;
-        RoomCompletor.CompletedRoom += UpdateData;
+        gameObject.SetActive(true);
     }
 
     private void OnDestroy()
     {
         Card.CardPlayed -= OnCardPlayed;
         TurnSystem.NextTurn -= OnNextTurn;
-        RoomCompletor.CompletedRoom -= UpdateData;
+        RoomCompletor.CompletedRoom -= SaveData;
+    }
+    private void OnNextTurn()
+    {
+        StartCoroutine(NextTurn());
     }
 
     private void OnCardPlayed(Card card)
@@ -61,19 +71,10 @@ public class Character : Unit
 
         foreach (var ability in card.Data.Abilities)
         {
-            switch (ability.AbilityType)
+            switch (ability)
             {
-                case Ability.Type.DEAL_DAMAGE:
-                    _animation.Attack();
-                    break;
-                case Ability.Type.ADD_SHIELD:
-                    Debug.LogError("NotImplementedException");
-                    break;
-                case Ability.Type.HEALING:
-                    Debug.LogError("NotImplementedException");
-                    break;
-                case Ability.Type.ADD_POISON_STATUS:
-                    Debug.LogError("NotImplementedException");
+                case DealDamageAbility:
+                    Animation.Attack();
                     break;
                 default:
                     throw new System.Exception("The raw type of ability");
@@ -94,8 +95,8 @@ public class Character : Unit
         CurrentMana = Data.MaxMana;
     }
 
-    private void UpdateData()
+    private void SaveData()
     {
-        Data.CurrentHp = CurrentHp;
+        Data.SaveData(CurrentHp);
     }
 }

@@ -11,7 +11,7 @@ public class EnemyData : UnitData
     private List<Ability> _abilities = new List<Ability>();
 
     public Enemy Prefab { get => _prefab; }
-    public List<Ability> ActionPatterns { get => _abilities; }
+    public IList<Ability> ActionPatterns { get => _abilities.AsReadOnly(); }
 
     private void OnValidate()
     {

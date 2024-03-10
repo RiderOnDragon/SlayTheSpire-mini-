@@ -11,14 +11,12 @@ public class BattleInteface : MonoBehaviour
     {
         TurnSystem.NextTurn += OnNextTurn;
         EnemySquad.AllWavesDefeated += HideInterface;
-        Character.Death += HideInterface;
     }
 
     private void OnDestroy()
     {
         TurnSystem.NextTurn -= OnNextTurn;
         EnemySquad.AllWavesDefeated -= HideInterface;
-        Character.Death -= HideInterface;
     }
 
     private void OnNextTurn()

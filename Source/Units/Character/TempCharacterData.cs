@@ -31,7 +31,7 @@ public class TempCharacterData : CharacterData
     public int CurrentHp
     {
         get { return _currentHP; }
-        set {
+        private set {
             if (value < 0)
                 throw new System.ArgumentException();
 
@@ -99,6 +99,11 @@ public class TempCharacterData : CharacterData
         _countReceivedCards = characterData.CountReceivedCards;
         _rewardCardsCount = characterData.RewardCardsCount;
         _startDeck = characterData.StartDeck.ToList();
+    }
+
+    public void SaveData(int hp)
+    {
+        CurrentHp = hp;
     }
 
     public void AddCardToDeck(CardData card)

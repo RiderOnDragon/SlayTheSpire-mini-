@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 79979e3431983d2449da8c400efe50e5, type: 3}
-  m_Name: TestHealingCard
+  m_Name: TestAddShieldCard
   m_EditorClassIdentifier: 
   _prefab: {fileID: 2067810711022871780, guid: 896c92875694e794b9b44e4c383d1701, type: 3}
   _deckPanelCardPrefab: {fileID: 3456846743230433942, guid: 463cc6806ee44d745a8192173883b667, type: 3}
   _cardAbilities:
   - _target: 1
-    _type: 2
-    _value: 3
+    _type: 1
+    _value: 5
     _numberTriggering: 1
-  _manaCost: 0
-  _name: "\u041B\u0435\u0447\u0435\u043D\u0438\u0435"
+  _manaCost: 1
+  _name: "\u0429\u0438\u0442"
+  _description: "\u0414\u0430\u0451\u0442 SHIELD_VALUE \u0449\u0438\u0442\u0430"
   _background: {fileID: 0}
   _img: {fileID: 0}
   _manaCostImg: {fileID: 1496935730, guid: 1cab83c0b7c78a74981af63bd8d5210b, type: 3}

@@ -9,6 +9,8 @@ public class EnemyWave : ISerializationCallbackReceiver
 
     public IList<EnemyData> Enemys { get => _enemys.AsReadOnly(); }
 
+    private const int MAX_ENEMY_IN_SQUAD = 5;
+
     public void OnBeforeSerialize()
     {
         Validate();
@@ -21,7 +23,7 @@ public class EnemyWave : ISerializationCallbackReceiver
 
     private void Validate()
     {
-        int maxCount = GameConst.MAX_ENEMY_IN_SQUAD;
+        int maxCount = MAX_ENEMY_IN_SQUAD;
 
         if (_enemys.Count > maxCount)
         {

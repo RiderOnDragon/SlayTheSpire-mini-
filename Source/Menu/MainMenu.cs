@@ -1,20 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using IJunior.TypedScenes;
-using System.Linq;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private CharacterData _characterData; //Позже сделать окно выбора персонажа
+    [SerializeField] private List<CharacterData> _characterDatas = new List<CharacterData>();
     [SerializeField] private StageConfig _stageConfig;
     [SerializeField] private StageTempData _stageTempData;
     [SerializeField] private TempCharacterData _tempCharacterData;
+    [SerializeField] private GameOver _gameOverBehaivor;
 
-    public void StartGame()
+    public List<CharacterData> CharacterDatas { get => _characterDatas; }
+
+    public void StartGame(CharacterData characterData)
     {
         _stageTempData.Init(_stageConfig);
-        _tempCharacterData.Init(_characterData);
+        _tempCharacterData.Init(characterData);
+
+        var character = Instantiate(characterData.Prefab);
+        character.Init(_tempCharacterData);
+        character.gameObject.SetActive(false);
+
+        _gameOverBehaivor.Init();
 
         new BasicRoomLoadingOptions(_stageTempData, _tempCharacterData);
         _stageTempData.GetStartRoom().LoadRoom();

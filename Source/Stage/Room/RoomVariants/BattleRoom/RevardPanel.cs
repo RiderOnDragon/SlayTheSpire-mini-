@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -7,7 +8,6 @@ using UnityEngine.UI;
 
 public class RevardPanel : MonoBehaviour
 {
-    [SerializeField] private CardsDatabase _cardsDatabase;
     [SerializeField] private Transform _rewardCardsContainer;
     [SerializeField] private TextMeshProUGUI _selectRevardCardText;
     [SerializeField] private Button _giveRewardBtn;
@@ -18,8 +18,10 @@ public class RevardPanel : MonoBehaviour
 
     public void ShowReward()
     {
+        List<CardData> cards = Resources.FindObjectsOfTypeAll<CardData>().ToList();
+
         var rewardCards = new List<CardData>();
-        rewardCards.AddRange(_cardsDatabase.Cards[Character.Singleton.Data.Class]);
+        rewardCards.AddRange(cards.FindAll(card => card.Affiliation == Character.Singleton.Data.Class));
 
         for (int i = 0; i < Character.Singleton.Data.RewardCardsCount; i++)
         {

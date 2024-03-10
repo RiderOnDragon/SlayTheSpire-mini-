@@ -11,16 +11,18 @@ public class EnemyView : MonoBehaviour
     [SerializeField] private Sprite _attackSprite;
     [SerializeField] private Sprite _shieldSprite;
 
-    public void ChangeActionView(Ability.Type action, int value)
+    public void ChangeActionView(Ability action, int value)
     {
-        switch (action) 
+        switch (action)
         {
-            case Ability.Type.DEAL_DAMAGE:
+            case DealDamageAbility:
                 _actionImage.sprite = _attackSprite;
                 break;
-            case Ability.Type.ADD_SHIELD:
+            case AddShieldAbility:
                 _actionImage.sprite = _shieldSprite;
                 break;
+            default:
+                throw new System.Exception("The raw type of ability");
         }
 
         _valueText.text = value.ToString();

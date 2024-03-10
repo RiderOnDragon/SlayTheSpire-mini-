@@ -4,18 +4,12 @@ using UnityEngine;
 
 public class PoisonStatus : TempStatus
 {
-    protected override int DecreasePerTick { get; } = 1;
-
-    public PoisonStatus(Unit target, int value) : base(target, value)
+    public PoisonStatus(int value) : base(value)
     {
     }
 
-    protected override void ApplyEffect(Unit taget)
+    protected override IEnumerator ApplyTickEffect()
     {
-    }
-
-    protected override void ApplyTickEffect(Unit target)
-    {
-        target.TakeDamage(Value, true);
+        yield return _target.TakeDamage(Value, true);
     }
 }

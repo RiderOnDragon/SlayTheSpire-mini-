@@ -4,20 +4,17 @@ using UnityEngine;
 
 public abstract class TempStatus : Status
 {
-    private Unit _target;
+    protected virtual int DecreasePerTick { get; } = 1;
 
-    protected abstract int DecreasePerTick { get; }
-
-    public TempStatus(Unit target, int value) : base(target, value)
+    public TempStatus(int value) : base(value)
     {
-        _target = target;
     }
 
-    public void Tick()
+    public IEnumerator Tick()
     {
-        ApplyTickEffect(_target);
+        yield return ApplyTickEffect();
         Value -= DecreasePerTick;
     }
 
-    protected abstract void ApplyTickEffect(Unit target);
+    protected virtual IEnumerator ApplyTickEffect() { yield return null; }
 }
