@@ -77,7 +77,8 @@ public class Character : Unit
                     Animation.Attack();
                     break;
                 default:
-                    throw new System.Exception("The raw type of ability");
+                    Debug.LogError("The raw type of ability");
+                    break;
             }
         }
     }

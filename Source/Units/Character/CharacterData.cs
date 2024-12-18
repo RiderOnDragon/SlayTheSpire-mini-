@@ -11,6 +11,7 @@ public class CharacterData : UnitData
     }
 
     [SerializeField] protected Character _prefab;
+    [SerializeField] private Sprite _spriteForButton;
     [SerializeField] protected CharacterClass _class;
     [Tooltip("restoring health when visiting the camp")]
     [SerializeField] protected int _restoringHp;
@@ -21,6 +22,7 @@ public class CharacterData : UnitData
     [SerializeField] protected List<CardData> _startDeck;
 
     public Character Prefab { get => _prefab; }
+    public Sprite SpriteForButton { get => _spriteForButton; }
     public int RestoringHp { get => _restoringHp; }
     public int MaxMana { get => _maxMana; }
     public int MaxCardOnHand { get => _maxCardOnHand; }
@@ -28,4 +30,5 @@ public class CharacterData : UnitData
     public int RewardCardsCount { get => _rewardCardsCount; }
     public IList<CardData> StartDeck { get => _startDeck.AsReadOnly(); }
     public CharacterClass Class { get => _class; }
+    
 }

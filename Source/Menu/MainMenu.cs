@@ -10,7 +10,21 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private TempCharacterData _tempCharacterData;
     [SerializeField] private GameOver _gameOverBehaivor;
 
+    [SerializeField] private ChoiseCharacterPanel _choiseCharacterPanel;
+
     public List<CharacterData> CharacterDatas { get => _characterDatas; }
+
+    public static MainMenu Singleton;
+
+    private void Awake()
+    {
+        if (Singleton == null)
+            Singleton = this;
+        else
+            Destroy(gameObject);
+
+        _choiseCharacterPanel.Init(_characterDatas);
+    }
 
     public void StartGame(CharacterData characterData)
     {

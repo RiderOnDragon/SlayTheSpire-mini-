@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHp: 100
   _prefab: {fileID: 1621774732521738392, guid: a607cc20d1597614698777d683181204, type: 3}
+  _spriteForButton: {fileID: 2113280918, guid: 7990e3c446ce5d049b5457cff11a7166, type: 3}
   _class: 0
   _restoringHp: 20
   _maxMana: 3
